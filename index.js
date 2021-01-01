@@ -9,7 +9,10 @@ const { dbConnection } = require('./database/config');
 const app = express();
 
 // Configurar Cors
-app.use(cors())
+app.use(cors());
+
+// Lectura y parseo del body
+app.use(express.json());
 
 // Base de datos
 dbConnection();
@@ -17,13 +20,8 @@ dbConnection();
 console.log(process.env);
 
 // Rutas
-app.get('/', (req, res) => {
-
-    res.json({
-        ok: true,
-        msg: 'Hola Mundo'
-    });
-});
+app.use('/api/usuarios', require('./routes/usuariosRoutes'));
+app.use('/api/login', require('./routes/authRoutes'));
 
 app.listen(process.env.PORT, () => {
     console.log('Servidor corriendo en el puerto ' + process.env.PORT);
